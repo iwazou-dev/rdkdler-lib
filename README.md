@@ -30,7 +30,8 @@
 
 ## 利用方法
 
-本ライブラリはJitPack(https://jitpack.io/#iwazou-dev/rdkdler-lib)で公開しています。リンク先にもありますが以下の設定を行うことで利用出来ます。（Gradleの場合）
+本ライブラリは JitPack(https://jitpack.io/#iwazou-dev/rdkdler-lib) で公開しています。  
+以下の設定を行うことで利用出来ます。（Gradleの場合）
 
 `settings.gradle.kts`に以下を追加。
 ```kotlin
