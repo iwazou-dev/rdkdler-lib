@@ -30,8 +30,7 @@
 
 ## 利用方法
 
-本ライブラリはJitPack(https://jitpack.io/)で公開しています。
-TODO 
+本ライブラリはJitPack(https://jitpack.io/#iwazou-dev/rdkdler-lib)で公開しています。リンク先にもありますが以下の設定を行うことで利用出来ます。（Gradleの場合）
 
 `settings.gradle.kts`に以下を追加。
 ```kotlin
@@ -47,9 +46,9 @@ dependencyResolutionManagement {
 ```kotlin
 dependencies {
     // タイムフリー番組の取得
-    implementation("com.github.iwazou-dev.rdkdler-lib:rdkdler-download:1.0")
+    implementation("com.github.iwazou-dev.rdkdler-lib:rdkdler-download:1.0.0")
     // 番組情報の検索・番組表の取得
-    implementation("com.github.iwazou-dev.rdkdler-lib:rdkdler-program:1.0")
+    implementation("com.github.iwazou-dev.rdkdler-lib:rdkdler-program:1.0.0")
 }
 ```
 
