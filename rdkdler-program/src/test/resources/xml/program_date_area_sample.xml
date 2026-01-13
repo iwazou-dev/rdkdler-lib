@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<radiko>
+    <ttl>1800</ttl>
+    <srvtime>1761721844</srvtime>
+    <stations>
+        <station id="STATION01">
+            <name>ステーション１</name>
+            <progs>
+                <date>20251022</date>
+                <prog id="12369134" master_id="MASTER_ID11" ft="20251022050000" to="20251022063000" ftl="0500" tol="0630" dur="5400">
+                    <title>タイトル１１</title>
+                    <url>URL11</url>
+                    <url_link>URL_LINK11</url_link>
+                    <failed_record>FAILED_RECORD11</failed_record>
+                    <ts_in_ng>111</ts_in_ng>
+                    <tsplus_in_ng>211</tsplus_in_ng>
+                    <ts_out_ng>311</ts_out_ng>
+                    <tsplus_out_ng>411</tsplus_out_ng>
+                    <desc>デスク１１</desc>
+                    <info>インフォ１１</info>
+                    <pfm>PFM11</pfm>
+                    <img>IMG11</img>
+                    <tag>
+                        <item>
+                            <name>アイテム１１１</name>
+                        </item>
+                        <item>
+                            <name>アイテム１１２</name>
+                        </item>
+                        <item>
+                            <name>アイテム１１３</name>
+                        </item>
+                    </tag>
+                    <genre>
+                        <personality id="C111">
+                            <name>パーソナリティー１１１</name>
+                        </personality>
+                        <personality id="C112">
+                            <name>パーソナリティー１１２</name>
+                        </personality>
+                        <personality id="C113">
+                            <name>パーソナリティー１１３</name>
+                        </personality>
+                        <program id="P111">
+                            <name>プログラム１１１</name>
+                        </program>
+                        <program id="P112">
+                            <name>プログラム１１２</name>
+                        </program>
+                        <program id="P113">
+                            <name>プログラム１１３</name>
+                        </program>
+                    </genre>
+                    <metas>
+                        <meta name="メタ名前１１１" value="メタ値１１１" />
+                        <meta name="メタ名前１１２" value="メタ値１１２" />
+                        <meta name="メタ名前１１３" value="メタ値１１３" />
+                    </metas>
+                </prog>
+                <prog id="12369135" master_id="MASTER_ID12" ft="20251022063000" to="20251022083000" ftl="0630" tol="0830" dur="7200">
+                    <title>タイトル１２</title>
+                    <url>URL12</url>
+                    <url_link>URL_LINK12</url_link>
+                    <failed_record>FAILED_RECORD12</failed_record>
+                    <ts_in_ng>112</ts_in_ng>
+                    <tsplus_in_ng>212</tsplus_in_ng>
+                    <ts_out_ng>312</ts_out_ng>
+                    <tsplus_out_ng>412</tsplus_out_ng>
+                    <desc>デスク１２</desc>
+                    <info>インフォ１２</info>
+                    <pfm>PFM12</pfm>
+                    <img>IMG12</img>
+                    <tag>
+                        <item>
+                            <name>アイテム１２１</name>
+                        </item>
+                    </tag>
+                    <genre>
+                        <personality id="C121">
+                            <name>パーソナリティー１２１</name>
+                        </personality>
+                        <program id="P121">
+                            <name>プログラム１２１</name>
+                        </program>
+                    </genre>
+                    <metas>
+                        <meta name="メタ名前１２１" value="メタ値１２１" />
+                    </metas>
+                </prog>
+                <prog id="" master_id="" ft="" to="" ftl="" tol="" dur="">
+                    <title></title>
+                    <url></url>
+                    <url_link></url_link>
+                    <failed_record></failed_record>
+                    <ts_in_ng></ts_in_ng>
+                    <tsplus_in_ng></tsplus_in_ng>
+                    <ts_out_ng></ts_out_ng>
+                    <tsplus_out_ng></tsplus_out_ng>
+                    <desc></desc>
+                    <info></info>
+                    <pfm></pfm>
+                    <img></img>
+                    <tag></tag>
+                    <genre></genre>
+                    <metas></metas>
+                </prog>
+            </progs>
+        </station>
+        <station id="STATION02">
+            <name>ステーション２</name>
+            <progs>
+                <date>20251022</date>
+                <prog id="12369134" master_id="MASTER_ID21" ft="20251022050000" to="20251022063000" ftl="0500" tol="0630" dur="5400">
+                    <title>タイトル２１</title>
+                    <url>URL21</url>
+                    <url_link>URL_LINK21</url_link>
+                    <failed_record>FAILED_RECORD21</failed_record>
+                    <ts_in_ng>121</ts_in_ng>
+                    <tsplus_in_ng>221</tsplus_in_ng>
+                    <ts_out_ng>321</ts_out_ng>
+                    <tsplus_out_ng>421</tsplus_out_ng>
+                    <desc>デスク２１</desc>
+                    <info>インフォ２１</info>
+                    <pfm>PFM21</pfm>
+                    <img>IMG21</img>
+                    <tag>
+                        <item>
+                            <name>アイテム２１１</name>
+                        </item>
+                    </tag>
+                    <genre>
+                        <personality id="C211">
+                            <name>パーソナリティー２１１</name>
+                        </personality>
+                        <program id="P211">
+                            <name>プログラム２１１</name>
+                        </program>
+                    </genre>
+                    <metas>
+                        <meta name="メタ名前２１１" value="メタ値２１１" />
+                    </metas>
+                </prog>
+                <prog id="12369135" master_id="MASTER_ID22" ft="20251022063000" to="20251022083000" ftl="0630" tol="0830" dur="7200">
+                    <title>タイトル２２</title>
+                    <url>URL22</url>
+                    <url_link>URL_LINK22</url_link>
+                    <failed_record>FAILED_RECORD22</failed_record>
+                    <ts_in_ng>122</ts_in_ng>
+                    <tsplus_in_ng>222</tsplus_in_ng>
+                    <ts_out_ng>322</ts_out_ng>
+                    <tsplus_out_ng>422</tsplus_out_ng>
+                    <desc>デスク２２</desc>
+                    <info>インフォ２２</info>
+                    <pfm>PFM22</pfm>
+                    <img>IMG22</img>
+                    <tag>
+                        <item>
+                            <name>アイテム２２１</name>
+                        </item>
+                    </tag>
+                    <genre>
+                        <personality id="C221">
+                            <name>パーソナリティー２２１</name>
+                        </personality>
+                        <program id="P221">
+                            <name>プログラム２２１</name>
+                        </program>
+                    </genre>
+                    <metas>
+                        <meta name="メタ名前２２１" value="メタ値２２１" />
+                    </metas>
+                </prog>
+            </progs>
+        </station>
+        <station id="STATION03">
+            <name>ステーション３</name>
+            <progs>
+                <date>20251022</date>
+                <prog id="12369134" master_id="MASTER_ID31" ft="20251022050000" to="20251022063000" ftl="0500" tol="0630" dur="5400">
+                    <title>タイトル３１</title>
+                    <url>URL31</url>
+                    <url_link>URL_LINK31</url_link>
+                    <failed_record>FAILED_RECORD31</failed_record>
+                    <ts_in_ng>131</ts_in_ng>
+                    <tsplus_in_ng>231</tsplus_in_ng>
+                    <ts_out_ng>331</ts_out_ng>
+                    <tsplus_out_ng>431</tsplus_out_ng>
+                    <desc>デスク３１</desc>
+                    <info>インフォ３１</info>
+                    <pfm>PFM31</pfm>
+                    <img>IMG31</img>
+                    <tag>
+                        <item>
+                            <name>アイテム３１１</name>
+                        </item>
+                    </tag>
+                    <genre>
+                        <personality id="C311">
+                            <name>パーソナリティー３１１</name>
+                        </personality>
+                        <program id="P311">
+                            <name>プログラム３１１</name>
+                        </program>
+                    </genre>
+                    <metas>
+                        <meta name="メタ名前３１１" value="メタ値３１１" />
+                    </metas>
+                </prog>
+            </progs>
+        </station>
+    </stations>
+</radiko>

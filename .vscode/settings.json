@@ -1,0 +1,15 @@
+{
+    "java.compile.nullAnalysis.mode": "automatic",
+    "java.configuration.updateBuildConfiguration": "automatic",
+    "java.format.enabled": false, // VSCODEの Javaフォーマットを無効化
+    "editor.formatOnSave": false, // 保存時にファイルをフォーマットしない
+    "emeraldwalk.runonsave": {
+        "commands": [
+            {
+                "match": "\\.java$",
+                "cmd": "./gradlew -q -PspotlessIdeHook=\"${file}\" spotlessApply"
+            }
+        ]
+    },
+    "editor.detectIndentation": false,
+}

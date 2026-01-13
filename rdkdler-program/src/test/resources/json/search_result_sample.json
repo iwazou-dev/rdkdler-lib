@@ -1,0 +1,128 @@
+{
+  "meta": {
+    "key": ["KEY1", "KEY2", "KEY3"],
+    "station_id": [],
+    "area_id": ["JP14"],
+    "cur_area_id": "JP14",
+    "region_id": "",
+    "start_day": "2025-10-02",
+    "end_day": "",
+    "filter": "",
+    "result_count": 100,
+    "page_idx": 0,
+    "row_limit": 50,
+    "kakuchou": [],
+    "suisengo": "",
+    "genre_id": []
+  },
+  "data": [
+    {
+      "start_time": "2025-10-31 17:30:00",
+      "end_time": "2025-10-31 18:00:00",
+      "start_time_s": "1730",
+      "end_time_s": "1800",
+      "program_date": "20251031",
+      "program_url": "PROGRAM_URL1",
+      "station_id": "STATION_ID1",
+      "performer": "PERFORMER1",
+      "title": "TITLE1",
+      "info": "INFO1",
+      "description": "DESCRIPTION1",
+      "status": "STATUS1",
+      "img": "IMG1",
+      "genre": {
+        "personality": {
+          "id": "C001",
+          "name": "PERSONALITY1"
+        },
+        "program": {
+          "id": "P001",
+          "name": "PROGRAM1"
+        }
+      },
+      "ts_in_ng": 11,
+      "ts_out_ng": 12,
+      "tsplus_in_ng": 13,
+      "tsplus_out_ng": 14,
+      "metas": [
+        {
+          "name": "NAME11",
+          "value": "VALUE11"
+        },
+        {
+          "name": "NAME12",
+          "value": "VALUE12"
+        },
+        {
+          "name": "NAME13",
+          "value": "VALUE13"
+        }
+      ]
+    },
+    {
+      "start_time": "2025-10-31 11:20:00",
+      "end_time": "2025-10-31 11:30:00",
+      "start_time_s": "1120",
+      "end_time_s": "1130",
+      "program_date": "20251031",
+      "program_url": "PROGRAM_URL2",
+      "station_id": "STATION_ID2",
+      "performer": "PERFORMER2",
+      "title": "TITLE2",
+      "info": "INFO2",
+      "description": "DESCRIPTION2",
+      "status": "STATUS2",
+      "img": "IMG2",
+      "genre": {
+        "personality": {
+          "id": "C002",
+          "name": "PERSONALITY2"
+        },
+        "program": {
+          "id": "P002",
+          "name": "PROGRAM2"
+        }
+      },
+      "ts_in_ng": 21,
+      "ts_out_ng": 22,
+      "tsplus_in_ng": 23,
+      "tsplus_out_ng": 24,
+      "metas": [
+        {
+          "name": "NAME21",
+          "value": "VALUE21"
+        }
+      ]
+    },
+    {
+      "start_time": "2025-10-30 17:30:00",
+      "end_time": "2025-10-30 18:00:00",
+      "start_time_s": "1730",
+      "end_time_s": "1800",
+      "program_date": "20251030",
+      "program_url": "PROGRAM_URL3",
+      "station_id": "STATION_ID3",
+      "performer": "PERFORMER3",
+      "title": "TITLE3",
+      "info": "INFO3",
+      "description": "DESCRIPTION3",
+      "status": "STATUS3",
+      "img": "IMG3",
+      "genre": {
+        "personality": {
+          "id": "C003",
+          "name": "PERSONALITY3"
+        },
+        "program": {
+          "id": "P003",
+          "name": "PROGRAM3"
+        }
+      },
+      "ts_in_ng": 31,
+      "ts_out_ng": 32,
+      "tsplus_in_ng": 33,
+      "tsplus_out_ng": 34,
+      "metas": []
+    }
+  ]
+}

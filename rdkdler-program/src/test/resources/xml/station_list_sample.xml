@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<stations area_id="AREA_ID" area_name="AREA_NAME">
+    <station>
+        <id>STATION_ID1</id>
+        <name>NAME1</name>
+        <ascii_name>ASCII_NAME1</ascii_name>
+        <ruby>RUBY1</ruby>
+        <areafree>11</areafree>
+        <timefree>12</timefree>
+        <logo width="111" height="121" align="ALIGN11">LOGO_TEXT11</logo>
+        <logo width="112" height="122" align="ALIGN12">LOGO_TEXT12</logo>
+        <logo width="113" height="123" align="ALIGN13">LOGO_TEXT13</logo>
+        <banner>BANNER1</banner>
+        <href>HREF1</href>
+        <simul_max_delay>13</simul_max_delay>
+        <tf_max_delay>14</tf_max_delay>
+    </station>
+    <station>
+        <id>STATION_ID2</id>
+        <name>NAME2</name>
+        <ascii_name>ASCII_NAME2</ascii_name>
+        <ruby>RUBY2</ruby>
+        <areafree>21</areafree>
+        <timefree>22</timefree>
+        <logo width="211" height="221" align="ALIGN21">LOGO_TEXT21</logo>
+        <banner>BANNER2</banner>
+        <href>HREF2</href>
+        <simul_max_delay>23</simul_max_delay>
+        <tf_max_delay>24</tf_max_delay>
+    </station>
+    <station>
+        <id>STATION_ID3</id>
+        <name>NAME3</name>
+        <ascii_name>ASCII_NAME3</ascii_name>
+        <ruby>RUBY3</ruby>
+        <areafree>31</areafree>
+        <timefree>32</timefree>
+        <banner>BANNER3</banner>
+        <href>HREF3</href>
+        <simul_max_delay>33</simul_max_delay>
+        <tf_max_delay>34</tf_max_delay>
+    </station>
+</stations>

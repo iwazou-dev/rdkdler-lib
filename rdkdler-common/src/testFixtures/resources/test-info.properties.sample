@@ -1,0 +1,12 @@
+# 必須 : FFmpegのインストール先パス
+ffmpeg.path=
+# 必須 : 現在地のエリアID(JP1〜JP47のいずれか)
+radiko.area.current.id=
+# 必須 : 現在地のラジオ局ID(TBSなど)
+radiko.station.current.id=
+# 任意 : エリア外（エリアフリー）のラジオ局ID
+radiko.station.areafree.id=
+# 任意 : ラジコログインメールアドレス
+radiko.login.mail=
+# 任意 : ラジコログインパスワード
+radiko.login.password=
