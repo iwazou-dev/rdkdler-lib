@@ -27,7 +27,6 @@
 本ライブラリは、音声データのエンコードおよび結合に **FFmpeg** を使用します。
 ご利用の環境に合わせて、事前にFFmpegをインストールし、パスを通しておいてください。
 
-
 ## 利用方法
 
 本ライブラリは JitPack(https://jitpack.io/#iwazou-dev/rdkdler-lib) で公開しています。  
@@ -52,6 +51,7 @@ dependencies {
     implementation("com.github.iwazou-dev.rdkdler-lib:rdkdler-program:1.0.0")
 }
 ```
+
 
 ### タイムフリー番組の保存
 
@@ -181,6 +181,9 @@ public class GetProgramExample {
     }
 }
 ```
+
+## Javadoc
+https://jitpack.io/com/github/iwazou-dev/rdkdler-lib/latest/javadoc/
 
 
 ## リンク・連絡先
