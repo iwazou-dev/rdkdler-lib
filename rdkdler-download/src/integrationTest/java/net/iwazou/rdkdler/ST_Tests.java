@@ -10,6 +10,7 @@ import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Objects;
 import net.iwazou.rdkdler.area.AreaPrefecture;
 import net.iwazou.rdkdler.area.AreaPrefectureService;
 import net.iwazou.rdkdler.download.DefaultFFmpegFactory;
@@ -66,7 +67,11 @@ class ST_Tests {
                                     new ProgramSearchService(client, area);
                             programSearchService.setFilter(ProgramTimeRangeFilter.PAST);
                             ProgramSearchResult result = programSearchService.search("ニュース");
-                            ResultData data = result.getResultDatas().get(0);
+                            ResultData data =
+                                    result.getResultDatas().stream()
+                                            .filter(rd -> !isAllFlagsTwo(rd)) // 「すべて2」ではないものを抽出
+                                            .findFirst()
+                                            .orElseThrow();
                             String stationId = data.getStationId();
                             String title = data.getTitle();
                             LocalDateTime startTime = data.getStartTime();
@@ -78,6 +83,17 @@ class ST_Tests {
                                             String.format("ST1-%s %s.m4a", programDate, title));
                             rdkDownloadService.download(stationId, startTime, endTime, out, img);
                         });
+    }
+
+    /**
+     * すべてのNGフラグが2であるか判定する内部メソッド
+     */
+    private boolean isAllFlagsTwo(ResultData data) {
+        // Integer型のため、Objects.equals でNull安全に比較
+        return Objects.equals(data.getTsInNg(), 2)
+                && Objects.equals(data.getTsOutNg(), 2)
+                && Objects.equals(data.getTsplusInNg(), 2)
+                && Objects.equals(data.getTsplusOutNg(), 2);
     }
 
     @Test

@@ -114,6 +114,7 @@ class IT_RdkDownloadServiceTests {
         assumeTrue(areaFreeStationId != null, "エリアフリーの放送局が設定されていないのでテストをスキップする");
 
         rdkAuthenticator.login(mail, password);
+        assumeTrue(rdkAuthenticator.getAreafree() == 1, "アカウントがエリアフリー無効なのでテストをスキップする");
 
         LocalDate dt = LocalDate.now().minusDays(1);
         LocalTime lt = LocalTime.parse("10:00:00");

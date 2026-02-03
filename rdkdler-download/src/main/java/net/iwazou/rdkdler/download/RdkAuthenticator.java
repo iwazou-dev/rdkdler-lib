@@ -10,6 +10,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.Map;
+import java.util.Optional;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -42,6 +44,7 @@ public class RdkAuthenticator {
     /**
      * HTTP 通信を行うクライアントです。
      */
+    @Getter(AccessLevel.PACKAGE)
     private final RdkHttpClient rdkHttpClient;
 
     private static final String X_RADIKO_APP_VERSION = "X-Radiko-App-Version";
@@ -53,6 +56,7 @@ public class RdkAuthenticator {
     private static final String X_RADIKO_KEYLENGTH = "X-Radiko-Keylength";
     private static final String X_RADIKO_KEYOFFSET = "X-Radiko-Keyoffset";
     private static final String RADIKO_SESSION = "radiko_session";
+    private static final String JSON_AREAFREE = "areafree";
 
     /**
      * -- GETTER --
@@ -82,6 +86,7 @@ public class RdkAuthenticator {
      */
     @Setter @NonNull private String authkeyValue = "bcd151073c03b352e1ef2fd66c32209da9ca0afa";
 
+    @Getter private int areafree = 0;
     private String radikoSession = null;
     private String authtoken = null;
     private long acquisitionTime = 0; // トークン取得時刻
@@ -114,14 +119,19 @@ public class RdkAuthenticator {
         log.debug("login(String, String) : レスポンスボディ={}", body);
         ObjectMapper mapper = new ObjectMapper();
         JsonNode radikoSessionNode;
+        JsonNode areafreeNode;
         try {
             radikoSessionNode = mapper.readTree(body).get(RADIKO_SESSION);
+            areafreeNode = mapper.readTree(body).get(JSON_AREAFREE);
         } catch (JsonParseException e) {
             throw new RdkResponseException("invalid JSON response. body=" + body, e);
         }
         if (radikoSessionNode == null) {
             throw new RdkResponseException(
                     "radiko_session does not exist in response. body=" + body);
+        }
+        if (areafreeNode != null) {
+            this.areafree = safeParseInt(areafreeNode.asText()).orElse(0);
         }
         this.radikoSession = radikoSessionNode.asText();
         this.authtoken = null; // 認証を一旦無効にする
@@ -312,5 +322,16 @@ public class RdkAuthenticator {
         int end = Math.min(src.length, keyoffset + keylength);
         byte[] slice = Arrays.copyOfRange(src, keyoffset, end);
         return Base64.getEncoder().encodeToString(slice);
+    }
+
+    private Optional<Integer> safeParseInt(String s) {
+        if (s == null || s.isBlank()) {
+            return Optional.empty();
+        }
+        try {
+            return Optional.of(Integer.parseInt(s.trim()));
+        } catch (NumberFormatException e) {
+            return Optional.empty();
+        }
     }
 }

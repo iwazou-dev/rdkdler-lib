@@ -17,7 +17,9 @@ import com.github.kokorin.jaffree.process.JaffreeAbnormalExitException;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
+import net.iwazou.rdkdler.TestRdkHttpResponse;
 import net.iwazou.rdkdler.download.RdkAuthenticator.AuthResult;
+import net.iwazou.rdkdler.http.RdkHttpClient;
 import net.iwazou.rdkdler.http.RdkHttpRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -33,6 +35,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 class RdkDownloadServiceMockTests {
+    @Mock RdkHttpClient mockRdkHttpClient;
     @Mock RdkAuthenticator mockRdkAuthenticator;
     @Mock FFmpegFactory mockFFmpegFactory;
     @Mock FFmpeg mockFFmpeg;
@@ -55,6 +58,43 @@ class RdkDownloadServiceMockTests {
 
         // モックの設定
         when(mockRdkAuthenticator.auth()).thenReturn(new AuthResult("authtoken", "areaId"));
+        when(mockRdkAuthenticator.getRdkHttpClient()).thenReturn(mockRdkHttpClient);
+        when(mockRdkHttpClient.get(any(RdkHttpRequest.class)))
+                .thenReturn(
+                        new TestRdkHttpResponse(
+                                200,
+                                null,
+                                """
+                                <?xml version="1.0" encoding="UTF-8" ?>
+                                <urls>
+                                    <url areafree="0" max_delay="60" timefree="0">
+                                        <playlist_create_url>https://a.test/so/playlist.m3u8</playlist_create_url>
+                                    </url>
+                                    <url areafree="0" max_delay="60" timefree="1">
+                                        <playlist_create_url>https://b.test/tf/playlist.m3u8</playlist_create_url>
+                                    </url>
+                                    <url areafree="1" max_delay="60" timefree="0">
+                                        <playlist_create_url>https://c.test/so/playlist.m3u8</playlist_create_url>
+                                    </url>
+                                    <url areafree="1" max_delay="60" timefree="1">
+                                        <playlist_create_url>https://d.test/tf/playlist.m3u8</playlist_create_url>
+                                    </url>
+                                    <url areafree="1" max_delay="60" timefree="1">
+                                        <playlist_create_url>https://e.test/tf/playlist.m3u8</playlist_create_url>
+                                    </url>
+                                    <url areafree="0" max_delay="60" timefree="0">
+                                        <playlist_create_url>https://f.test/so/playlist.m3u8</playlist_create_url>
+                                    </url>
+                                    <url areafree="1" max_delay="60" timefree="0">
+                                        <playlist_create_url>https://g.test/so/playlist.m3u8</playlist_create_url>
+                                    </url>
+                                    <url areafree="0" max_delay="60" timefree="1">
+                                        <playlist_create_url>https://h.test/tf/playlist.m3u8</playlist_create_url>
+                                    </url>
+                                </urls>
+                                """));
+        when(mockRdkHttpClient.options(any(RdkHttpRequest.class)))
+                .thenReturn(new TestRdkHttpResponse(200, null, null));
         when(mockFFmpegFactory.create()).thenReturn(mockFFmpeg);
         when(mockFFmpeg.addInput(any(Input.class))).thenReturn(mockFFmpeg);
         when(mockFFmpeg.addOutput(any(Output.class))).thenReturn(mockFFmpeg);
@@ -74,22 +114,24 @@ class RdkDownloadServiceMockTests {
         verify(mockFFmpeg, times(1)).setOverwriteOutput(anyBoolean());
         verify(mockFFmpeg, times(1)).execute();
 
-        assertThat(inputCaptor.getValue().buildArguments()).hasSize(6);
-        // 最初の５個のチェック
-        assertThat(inputCaptor.getValue().buildArguments().subList(0, 5))
+        assertThat(inputCaptor.getValue().buildArguments()).hasSize(8);
+        // 最初の７個のチェック
+        assertThat(inputCaptor.getValue().buildArguments().subList(0, 7))
                 .containsExactly(
                         "-fflags",
                         "+discardcorrupt",
                         "-headers",
                         "X-Radiko-AreaId: areaId\r\nX-Radiko-AuthToken: authtoken",
+                        "-http_seekable",
+                        "0",
                         "-i");
         // lsidはランダムなのでパターンマッチでチェック
         String urlPattern =
-                "https://radiko\\.jp/v2/api/ts/playlist\\.m3u8\\?"
+                "https://.+/playlist\\.m3u8\\?"
                         + "station_id=STATION&start_at=20251222100000&ft=20251222100000&"
                         + "end_at=20251222100500&to=20251222100500&seek=20251222100000&"
                         + "l=15&lsid=[a-f0-9]+&type=c";
-        assertThat(inputCaptor.getValue().buildArguments().get(5)).matches(urlPattern);
+        assertThat(inputCaptor.getValue().buildArguments().get(7)).matches(urlPattern);
 
         assertThat(outputCaptor.getValue().buildArguments())
                 .hasSize(7)
@@ -103,6 +145,43 @@ class RdkDownloadServiceMockTests {
 
         // モックの設定
         when(mockRdkAuthenticator.auth()).thenReturn(new AuthResult("authtoken", "areaId"));
+        when(mockRdkAuthenticator.getRdkHttpClient()).thenReturn(mockRdkHttpClient);
+        when(mockRdkHttpClient.get(any(RdkHttpRequest.class)))
+                .thenReturn(
+                        new TestRdkHttpResponse(
+                                200,
+                                null,
+                                """
+                                <?xml version="1.0" encoding="UTF-8" ?>
+                                <urls>
+                                    <url areafree="0" max_delay="60" timefree="0">
+                                        <playlist_create_url>https://a.test/so/playlist.m3u8</playlist_create_url>
+                                    </url>
+                                    <url areafree="0" max_delay="60" timefree="1">
+                                        <playlist_create_url>https://b.test/tf/playlist.m3u8</playlist_create_url>
+                                    </url>
+                                    <url areafree="1" max_delay="60" timefree="0">
+                                        <playlist_create_url>https://c.test/so/playlist.m3u8</playlist_create_url>
+                                    </url>
+                                    <url areafree="1" max_delay="60" timefree="1">
+                                        <playlist_create_url>https://d.test/tf/playlist.m3u8</playlist_create_url>
+                                    </url>
+                                    <url areafree="1" max_delay="60" timefree="1">
+                                        <playlist_create_url>https://e.test/tf/playlist.m3u8</playlist_create_url>
+                                    </url>
+                                    <url areafree="0" max_delay="60" timefree="0">
+                                        <playlist_create_url>https://f.test/so/playlist.m3u8</playlist_create_url>
+                                    </url>
+                                    <url areafree="1" max_delay="60" timefree="0">
+                                        <playlist_create_url>https://g.test/so/playlist.m3u8</playlist_create_url>
+                                    </url>
+                                    <url areafree="0" max_delay="60" timefree="1">
+                                        <playlist_create_url>https://h.test/tf/playlist.m3u8</playlist_create_url>
+                                    </url>
+                                </urls>
+                                """));
+        when(mockRdkHttpClient.options(any(RdkHttpRequest.class)))
+                .thenReturn(new TestRdkHttpResponse(200, null, null));
         when(mockFFmpegFactory.create()).thenReturn(mockFFmpeg);
         when(mockFFmpeg.addInput(any(Input.class))).thenReturn(mockFFmpeg);
         when(mockFFmpeg.addOutput(any(Output.class))).thenReturn(mockFFmpeg);
@@ -124,22 +203,24 @@ class RdkDownloadServiceMockTests {
         verify(mockFFmpeg, times(1)).execute();
 
         var input1 = inputCaptor.getAllValues().get(0);
-        assertThat(input1.buildArguments()).hasSize(6);
-        // 最初の５個のチェック
-        assertThat(input1.buildArguments().subList(0, 5))
+        assertThat(input1.buildArguments()).hasSize(8);
+        // 最初の７個のチェック
+        assertThat(input1.buildArguments().subList(0, 7))
                 .containsExactly(
                         "-fflags",
                         "+discardcorrupt",
                         "-headers",
                         "X-Radiko-AreaId: areaId\r\nX-Radiko-AuthToken: authtoken",
+                        "-http_seekable",
+                        "0",
                         "-i");
         // lsidはランダムなのでパターンマッチでチェック
         String urlPattern =
-                "https://radiko\\.jp/v2/api/ts/playlist\\.m3u8\\?"
+                "https://.+/playlist\\.m3u8\\?"
                         + "station_id=STATION&start_at=20251222100000&ft=20251222100000&"
                         + "end_at=20251222100500&to=20251222100500&seek=20251222100000&"
                         + "l=15&lsid=[a-f0-9]+&type=c";
-        assertThat(input1.buildArguments().get(5)).matches(urlPattern);
+        assertThat(input1.buildArguments().get(7)).matches(urlPattern);
         var input2 = inputCaptor.getAllValues().get(1);
         assertThat(input2.buildArguments()).hasSize(2).containsExactly("-i", "xxxxx.jpg");
 
@@ -167,6 +248,43 @@ class RdkDownloadServiceMockTests {
 
         // モックの設定
         when(mockRdkAuthenticator.auth()).thenReturn(new AuthResult("authtoken", "areaId"));
+        when(mockRdkAuthenticator.getRdkHttpClient()).thenReturn(mockRdkHttpClient);
+        when(mockRdkHttpClient.get(any(RdkHttpRequest.class)))
+                .thenReturn(
+                        new TestRdkHttpResponse(
+                                200,
+                                null,
+                                """
+                                <?xml version="1.0" encoding="UTF-8" ?>
+                                <urls>
+                                    <url areafree="0" max_delay="60" timefree="0">
+                                        <playlist_create_url>https://a.test/so/playlist.m3u8</playlist_create_url>
+                                    </url>
+                                    <url areafree="0" max_delay="60" timefree="1">
+                                        <playlist_create_url>https://b.test/tf/playlist.m3u8</playlist_create_url>
+                                    </url>
+                                    <url areafree="1" max_delay="60" timefree="0">
+                                        <playlist_create_url>https://c.test/so/playlist.m3u8</playlist_create_url>
+                                    </url>
+                                    <url areafree="1" max_delay="60" timefree="1">
+                                        <playlist_create_url>https://d.test/tf/playlist.m3u8</playlist_create_url>
+                                    </url>
+                                    <url areafree="1" max_delay="60" timefree="1">
+                                        <playlist_create_url>https://e.test/tf/playlist.m3u8</playlist_create_url>
+                                    </url>
+                                    <url areafree="0" max_delay="60" timefree="0">
+                                        <playlist_create_url>https://f.test/so/playlist.m3u8</playlist_create_url>
+                                    </url>
+                                    <url areafree="1" max_delay="60" timefree="0">
+                                        <playlist_create_url>https://g.test/so/playlist.m3u8</playlist_create_url>
+                                    </url>
+                                    <url areafree="0" max_delay="60" timefree="1">
+                                        <playlist_create_url>https://h.test/tf/playlist.m3u8</playlist_create_url>
+                                    </url>
+                                </urls>
+                                """));
+        when(mockRdkHttpClient.options(any(RdkHttpRequest.class)))
+                .thenReturn(new TestRdkHttpResponse(200, null, null));
         when(mockFFmpegFactory.create()).thenReturn(mockFFmpeg);
         when(mockFFmpeg.addInput(any(Input.class))).thenReturn(mockFFmpeg);
         when(mockFFmpeg.addOutput(any(Output.class))).thenReturn(mockFFmpeg);

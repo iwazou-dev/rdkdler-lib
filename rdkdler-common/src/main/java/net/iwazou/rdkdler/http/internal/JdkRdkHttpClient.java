@@ -135,6 +135,25 @@ public class JdkRdkHttpClient implements RdkHttpClient {
         return execute(builder, rdkHttpRequest.getHeaders());
     }
 
+    @Override
+    public RdkHttpResponse options(RdkHttpRequest rdkHttpRequest)
+            throws IOException, InterruptedException {
+        Objects.requireNonNull(rdkHttpRequest);
+        Objects.requireNonNull(rdkHttpRequest.getUrl());
+        String para = buildFormDataString(rdkHttpRequest.getParameters(), StandardCharsets.UTF_8);
+        Builder builder =
+                HttpRequest.newBuilder()
+                        .timeout(timeout)
+                        .method("OPTIONS", HttpRequest.BodyPublishers.noBody())
+                        .uri(
+                                URI.create(
+                                        rdkHttpRequest.getUrl()
+                                                + (CommonUtils.isNotBlank(para)
+                                                        ? "?" + para
+                                                        : "")));
+        return execute(builder, rdkHttpRequest.getHeaders());
+    }
+
     /**
      * {@link HttpRequest.Builder} を最終的な {@link HttpRequest} に組み立て、送信してレスポンスを変換します。
      *

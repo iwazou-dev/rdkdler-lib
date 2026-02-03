@@ -1,5 +1,10 @@
 package net.iwazou.rdkdler.download;
 
+import static java.util.Map.entry;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.github.kokorin.jaffree.ffmpeg.FFmpeg;
 import com.github.kokorin.jaffree.ffmpeg.UrlInput;
 import com.github.kokorin.jaffree.ffmpeg.UrlOutput;
@@ -9,11 +14,18 @@ import java.nio.file.Path;
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.iwazou.rdkdler.download.RdkAuthenticator.AuthResult;
+import net.iwazou.rdkdler.download.model.Urls;
+import net.iwazou.rdkdler.download.model.Urls.UrlEntry;
 import net.iwazou.rdkdler.exception.RdkDownloadException;
+import net.iwazou.rdkdler.http.RdkHttpClient;
+import net.iwazou.rdkdler.http.RdkHttpRequest;
+import net.iwazou.rdkdler.http.RdkHttpResponse;
 import net.iwazou.rdkdler.util.CommonUtils;
 
 /**
@@ -57,6 +69,8 @@ public class RdkDownloadService {
 
     private static final String X_RADIKO_AUTHTOKEN = "X-Radiko-AuthToken";
     private static final String X_RADIKO_AREAID = "X-Radiko-AreaId";
+    private static final String ACCESS_CONTROL_REQUEST_HEADERS = "Access-Control-Request-Headers";
+    private static final String ACCESS_CONTROL_REQUEST_METHOD = "Access-Control-Request-Method";
     private static final DateTimeFormatter DATE_TIME_FMT =
             DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
 
@@ -121,10 +135,39 @@ public class RdkDownloadService {
         // 擬似ランダム32桁（16進）
         String lsid = randomHex(32);
 
+        // playlist_create_urlの取得
+        Urls urls = getUrls(stationId);
+        log.debug("download(String, LocalDateTime, LocalDateTime, Path, String) : urls={}", urls);
+        // playlist_create_urlのフィルタリング
+        List<UrlEntry> urlEntries =
+                urls.getUrlEntries().stream()
+                        // areafree と timefree の両方が一致するものをフィルタリング
+                        .filter(url -> url.getAreafree() == authenticator.getAreafree())
+                        .filter(url -> url.getTimefree() == 1)
+                        .toList();
+        // 一応OPTIONSの送信で200のものを取得
+        String playlistCreateUrl = null;
+        for (UrlEntry entry : urlEntries) {
+            RdkHttpResponse response = options(entry.getPlaylistCreateUrl());
+            if (response.statusCode() == 200) {
+                playlistCreateUrl = entry.getPlaylistCreateUrl();
+            }
+        }
+        if (playlistCreateUrl == null) {
+            throw new RdkDownloadException("playlist_create_url is null");
+        }
+
         String m3u8 =
                 String.format(
-                        "https://radiko.jp/v2/api/ts/playlist.m3u8?station_id=%s&start_at=%s&ft=%s&end_at=%s&to=%s&seek=%s&l=15&lsid=%s&type=c",
-                        stationId, fromStr, fromStr, toStr, toStr, fromStr, lsid);
+                        "%s?station_id=%s&start_at=%s&ft=%s&end_at=%s&to=%s&seek=%s&l=15&lsid=%s&type=c",
+                        playlistCreateUrl,
+                        stationId,
+                        fromStr,
+                        fromStr,
+                        toStr,
+                        toStr,
+                        fromStr,
+                        lsid);
         log.debug(
                 "download(String, LocalDateTime, LocalDateTime, Path, String) : FFmpeg URL={}",
                 m3u8);
@@ -144,7 +187,8 @@ public class RdkDownloadService {
                         .addInput(
                                 UrlInput.fromUrl(m3u8)
                                         .addArguments("-fflags", "+discardcorrupt")
-                                        .addArguments("-headers", headers));
+                                        .addArguments("-headers", headers)
+                                        .addArguments("-http_seekable", "0"));
         UrlOutput output =
                 UrlOutput.toPath(out)
                         // マッピング：入力0の音声
@@ -221,5 +265,35 @@ public class RdkDownloadService {
             sb.append(String.format("%02x", b));
         }
         return sb.substring(0, n);
+    }
+
+    private Urls getUrls(String stationId) throws IOException, InterruptedException {
+        RdkHttpClient rdkHttpClient = authenticator.getRdkHttpClient();
+        String url =
+                String.format("https://radiko.jp/v3/station/stream/pc_html5/%s.xml", stationId);
+        log.debug("getUrls(String) : アクセスURL={}", url);
+        RdkHttpResponse response = rdkHttpClient.get(RdkHttpRequest.builder().url(url).build());
+        String body = CommonUtils.getBody(response);
+        log.debug("getUrls(String) : レスポンスボディ={}", body);
+        ObjectMapper objectMapper =
+                new XmlMapper().setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
+        Urls data = objectMapper.readValue(body, Urls.class);
+        log.debug("getUrls(String) : 取得結果={}", data);
+        return data;
+    }
+
+    private RdkHttpResponse options(String url) throws IOException, InterruptedException {
+        RdkHttpClient rdkHttpClient = authenticator.getRdkHttpClient();
+        log.debug("options(String) : アクセスURL={}", url);
+        Map<String, String> headers =
+                Map.ofEntries(
+                        entry(
+                                ACCESS_CONTROL_REQUEST_HEADERS,
+                                X_RADIKO_AREAID + "," + X_RADIKO_AUTHTOKEN),
+                        entry(ACCESS_CONTROL_REQUEST_METHOD, "GET"));
+        RdkHttpResponse response =
+                rdkHttpClient.options(RdkHttpRequest.builder().url(url).headers(headers).build());
+        log.debug("options(String) : 取得結果={}", response);
+        return response;
     }
 }

@@ -10,6 +10,15 @@ package net.iwazou.rdkdler.exception;
 public class RdkDownloadException extends RdkException {
 
     /**
+     * メッセージを指定して例外を生成します。
+     *
+     * @param message 例外メッセージ
+     */
+    public RdkDownloadException(String message) {
+        super(message);
+    }
+
+    /**
      * 原因例外（cause）を指定して生成します。
      *
      * @param cause 原因例外

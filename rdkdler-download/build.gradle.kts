@@ -8,6 +8,7 @@ plugins {
 dependencies {
     api(project(":rdkdler-common"))
     implementation(libs.jackson.databind)
+    implementation(libs.jackson.dataformat.xml)
     implementation(libs.jaffree)
 }
 

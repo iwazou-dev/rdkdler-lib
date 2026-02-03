@@ -43,4 +43,6 @@ public interface RdkHttpClient {
      */
     RdkHttpResponse postForm(RdkHttpRequest rdkHttpRequest)
             throws IOException, InterruptedException;
+
+    RdkHttpResponse options(RdkHttpRequest rdkHttpRequest) throws IOException, InterruptedException;
 }
